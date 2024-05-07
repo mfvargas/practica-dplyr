@@ -1,0 +1,114 @@
+---
+title: "Práctica de dplyr"
+author: "Manuel Vargas"
+format: html
+toc: true
+lang: es
+theme: morph
+---
+
+# Introducción
+Este documento presenta ejemplo de uso de las funciones del paquete dplyr.
+
+# Carga de paquetes
+
+```{r}
+#| label: carga-paquetes
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(knitr)
+library(palmerpenguins)
+```
+
+# Carga de datos
+
+```{r}
+#| label: carga-datos
+#| message: false
+#| warning: false
+
+delitos <- read_csv("estadisticaspoliciales2023.csv")
+```
+
+# select()
+
+## Ejemplo 1
+
+```{r}
+#| label: select-01
+
+# kable(penguins)
+
+# Selección de las columnas de especie, sexo y año
+penguins |>
+  select(species, sex, year) |>
+  kable()
+```
+
+## Ejemplo 2
+
+```{r}
+#| label: select-02
+
+# Cambio de nombre de columnas
+penguins |>
+  select(
+    especie = species,
+    sexo = sex,
+    anio = year
+  ) |>
+  kable()
+```
+
+# filter()
+
+## Ejemplo 1
+
+```{r}
+#| label: filter-01
+
+# Pingüinos de la especies Adelie y que son machos y que habitan en la isla Biscoe
+penguins |>
+  filter(species == "Adelie" & sex == "male" & island == "Biscoe") |>
+  kable()
+```
+
+## Ejemplo 2
+
+```{r}
+#| label: filter-02
+
+
+# Pinguinos que viven en la isla Biscoe o en la isla Torgersen
+
+penguins |>
+  filter(island == "Biscoe" | island == "Torgersen") |>
+  kable()
+```
+
+## Ejemplo 3
+
+```{r}
+#| label: filkter-03
+
+# Robos cometidos en San Pedro de Montes de Oca
+
+delitos |>
+  filter(Delito == "ROBO" & Canton == "MONTES DE OCA" & Distrito == "SAN PEDRO") |>
+  select(Delito, SubDelito, Victima, SubVictima, Canton, Distrito) |>
+  kable()
+```
+
+## Ejemplo 4
+
+```{r}
+#| label: filter-04
+
+# Penguinos con NA en la columna de sexo
+penguins |>
+  filter(is.na(sex)) |>
+  kable()
+```
+
